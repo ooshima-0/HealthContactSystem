@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<!-- <?!= HtmlService.createHtmlOutputFromFile("css").getContent() ?> -->
+	</head>
+	<body>
+		<h1>健康連絡システム<br>メールアドレス登録フォーム</h1>
+		<hr>
+		<form method="POST" action="<?!=appURL?>" name="form1" id="form1" onsubmit="return checkValue()">
+			<p>
+				<label>学年：</label>
+				<select name="grade" id="grade">
+					<? for (let i = 0; i < 3; i++) { ?>
+						<option value="<?!= i + 1 ?>"><?!= i + 1 ?>年</option>
+					<? } ?>
+				</select>
+			</p>
+
+			<p>
+				<label>クラス：</label>
+				<select name="class_" id="class_">
+					<? for (let i = 0; i < 9; i++) { ?>
+						<option value="<?!= i + 1 ?>"><?!= i + 1 ?>組</option>
+					<? } ?>
+				</select>
+			</p>
+
+			<p>
+				<label>番号：</label>
+				<select name="number" id="number">
+					<? for (let i = 0; i < 45; i++) { ?>
+						<option value="<?!= i + 1 ?>"><?!= i + 1 ?>番</option>
+					<? } ?>
+				</select>
+			</p>
+
+			<p>
+				<label>メールアドレス：</label>
+				<input type="text" name="mail_addr" required>
+			</p>
+
+			<p>
+				<input type="submit" value="登録">
+				<input type="reset" value="キャンセル">
+			</p>
+		</form>
+
+		<script>
+			function checkValue() {
+				const grades = document.form1.grade;
+				const classes = document.form1.class_;
+				const numbers = document.form1.number;
+
+				const input_g = grades.options[grades.selectedIndex].value;
+				const input_c = classes.options[classes.selectedIndex].value;
+				const input_n = numbers.options[numbers.selectedIndex].value;
+
+				const addr = document.form1.mail_addr.value;
+
+				if (!addr.trim()) {
+					alert("メールアドレスを入力してください");
+					return false;
+				}
+
+				const showMessage = "あなたは、" + input_g + "年" + input_c + "組" + input_n + "番の" + addr + "さんです\n登録しますか？";
+
+				if (window.confirm(showMessage)) return true;
+				else return false;
+			}
+		</script>
+	</body>
+</html>

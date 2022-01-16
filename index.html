@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="UTF-8">
+		<!-- <?!= HtmlService.createHtmlOutputFromFile("css").getContent() ?> -->
+	</head>
+	<body>
+		<h1>健康連絡フォーム</h1>
+		<h2 id="mailAddr">メールアドレス：<?!= mail_addr ?><br><h2>
+		<hr>
+		<form method="POST" action="<?!= appURL ?>" name="form1" id="form1" onsubmit="return checkValue()">
+			<p>
+				<label>学年：</label>
+				<select name="grade" id="grade">
+					<? for (let i = 0; i < 3; i++) { ?>
+						<option value="<?!= i + 1 ?>"><?!= i + 1 ?>年</option>
+					<? } ?>
+				</select>
+			</p>
+
+      <script>
+        function makeTemps(elem) {
+          const selectElem = document.getElementById(elem);
+
+          for (let i = 35.0; i < 40.1; i += 0.1) {
+            let option = document.createElement("option");
+            let temp = i.toFixed(1);
+            let content = temp + "(℃)";
+            if (temp == 35) content += "以下";
+            if (temp == 40) content += "以上";
+            option.value = temp;
+            option.textContent = content;
+            selectElem.appendChild(option);
+          }
+        }
+      </script>
+
+			<p>
+				<label>起床時の体温(℃)：</label>
+				<select name="mng_temp" id="mng_temp">
+          <script>makeTemps("mng_temp");</script>
+				</select>
+			</p>
+
+			<p>
+				<label>就寝時の体温(℃)：</label>
+				<select name="ngt_temp" id="ngt_temp">
+          <script>makeTemps("ngt_temp");</script>
+				</select>
+			</p>
+
+			<p>
+				<label>健康状態：</label>
+				<?!= createForm("health_st") ?>
+			</p>
+
+			<p>
+				<label>出席の可否：</label>
+				<select name="attendance" id="attendance">
+					<?!= createForm("attendance") ?>
+				</select>
+			</p>
+
+			<p>
+				<label>連絡者(欠席・遅刻・早退のみ)：</label>
+				<select name="contact_p" id="contact_p" onchange="checkChange();">
+					<?!= createForm("contact_p") ?>
+				</select>
+				<input type="text" id="other" name="other" style="display: none;">
+			</p>
+
+			<p>
+				<label>連絡事項：</label>
+				<input type="text" name="info">
+			</p>
+
+			<p>
+				<input type="submit" value="送信">
+				<input type="reset" value="キャンセル">
+			</p>
+		</form>
+
+		<script>
+			function checkChange() {
+				let value = 4;
+
+				if (document.getElementById("contact_p")) value = document.getElementById("contact_p").value;
+
+        document.getElementById("other").style.display = (value == 4) ? "" : "none";
+			}
+
+			function checkValue() {
+				let noCheck = true;
+
+				for (let i = 0; i < 10; i++) {
+					if (document.form1.health_st[i].checked) noCheck = false;
+				}
+
+				if (noCheck) {
+					alert("健康状態にチェックをしてください");
+					return false;
+				}
+			}
+		</script>
+	</body>
+</html>
